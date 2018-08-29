@@ -11,6 +11,7 @@
     <modules>
         <module>Demo1</module>
         <module>Demo2</module>
+        <module>demo2</module>
     </modules>
 
 
