@@ -46,9 +46,9 @@ public class Customer {
             }
 
             renterPoints++;
-
             if (myRental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
-                    myRental.getDaysRented() > 1) renterPoints++;
+                    myRental.getDaysRented() > 1)
+                renterPoints++;
 
             result += "\t" + myRental.getMovie().getTitle()+ "\t" + String.valueOf(thisAmount) +"\n";
             totalAmount += thisAmount;
