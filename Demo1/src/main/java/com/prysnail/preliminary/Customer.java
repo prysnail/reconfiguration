@@ -34,12 +34,10 @@ public class Customer {
             double thisAmount = 0;
             Rental myRental = (Rental) rentals.nextElement();
             thisAmount += calculateRentalFee(myRental);
-            renterPoints++;
-            if (myRental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
-                    myRental.getDaysRented() > 1)
-                renterPoints++;
-            amountVector.add(thisAmount);
+            renterPoints = calculateRenterPoints(myRental);
             rentalAmount += thisAmount;
+
+            amountVector.add(thisAmount);
         }
         return htmlState(amountVector);
     }
@@ -62,6 +60,15 @@ public class Customer {
                 break;
         }
         return amount;
+    }
+
+    private int calculateRenterPoints(Rental myRental){
+        renterPoints++;
+        if (myRental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
+                myRental.getDaysRented() > 1){
+            renterPoints++;
+        }
+        return renterPoints;
     }
 
     private String htmlState (Vector amountVector){
