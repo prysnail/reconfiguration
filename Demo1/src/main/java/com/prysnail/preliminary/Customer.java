@@ -1,10 +1,14 @@
 package com.prysnail.preliminary;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 public class Customer {
     private String name;
+    private double rentalAmount;
+    private int renterPoints;
     private Vector retals = new Vector();
 
     public Customer(String _name) {
@@ -21,10 +25,11 @@ public class Customer {
 
     //需要重构方法
     public String statement(){
-        double totalAmount = 0;
-        int renterPoints = 0;
+        rentalAmount = 0;
+        renterPoints = 0;
         Enumeration rentals = retals.elements();
-        String result = "Rental Record for " + getName() + "\n";
+        Vector<Double> amountVector = new Vector<>();
+
         while (rentals.hasMoreElements()){
             double thisAmount = 0;
             Rental myRental = (Rental) rentals.nextElement();
@@ -33,15 +38,10 @@ public class Customer {
             if (myRental.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
                     myRental.getDaysRented() > 1)
                 renterPoints++;
-
-            result += "\t" + myRental.getMovie().getTitle()+ "\t" + String.valueOf(thisAmount) +"\n";
-            totalAmount += thisAmount;
+            amountVector.add(thisAmount);
+            rentalAmount += thisAmount;
         }
-
-        result += "Amount owed is "+ String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(renterPoints)+
-                " frequent renter points";
-        return result;
+        return htmlState(amountVector);
     }
 
     private double calculateRentalFee(Rental myRental){
@@ -62,5 +62,21 @@ public class Customer {
                 break;
         }
         return amount;
+    }
+
+    private String htmlState (Vector amountVector){
+        String result = "Rental Record for " + getName() + "\n";
+
+        Enumeration rentals = retals.elements();
+        Enumeration amounts = amountVector.elements();
+        while (rentals.hasMoreElements()) {
+            Rental myRental = (Rental) rentals.nextElement();
+            Double amount = (Double) amounts.nextElement();
+            result += "\t" + myRental.getMovie().getTitle()+ "\t" + String.valueOf(amount) +"\n";
+        }
+        result += "Amount owed is "+ String.valueOf(rentalAmount) + "\n";
+        result += "You earned " + String.valueOf(renterPoints)+
+                " frequent renter points";
+        return result;
     }
 }
